@@ -5,13 +5,19 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
+// const checkToken = require("./middleware/middleware")
+
+//IMPORT `ROUTERS`
+const usersRouter = require("./users/users.router");
+
 const app = express()
 
 // Config JSON Response
 app.use(express.json())
 
 // Models
-const User = require('./models/User')
+// const User = require('./models/User')
+app.use("/users", usersRouter);
 
 // Open Route - Public Route
 app.get('/', (req, res) => {
@@ -19,7 +25,7 @@ app.get('/', (req, res) => {
 })
 
 // Private Route
-app.get('/user/:id', checkToken, async (req, res) => {
+/* app.get('/user/:id', checkToken, async (req, res) => {
 
     const id = req.params.id
 
@@ -32,35 +38,7 @@ app.get('/user/:id', checkToken, async (req, res) => {
     }
 
     res.status(200).json({user})
-})
-
-// middleware
-function checkToken(req, res, next){
-
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-
-    console.log(authHeader)
-    console.log(token)
-
-    if (!token) {
-        return res.status(401).json({msg: "Acesso negado!"})
-    }
-
-    try {
-
-        const secret = process.env.SECRET
-
-        jwt.verify(token, secret)
-
-        next()
-        
-    } catch (error) {
-        res.status(400).json({msg: "Token Inválido!"})
-        
-    }
-
-}
+}) */
 
 // Register User
 app.post('/auth/register', async(req, res) => {
